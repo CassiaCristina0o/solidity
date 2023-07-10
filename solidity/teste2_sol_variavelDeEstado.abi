@@ -1,0 +1,1 @@
+[{"inputs":[],"name":"alteraNumero","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"pegaNumero","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"view","type":"function"}]
