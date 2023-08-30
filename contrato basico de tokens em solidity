@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
+
+contract tokenCRteste {
+
+    string _name = "token CR";
+    string _symbol = "sith";
+    uint8 _decimals = 8;
+    uint _totalsupply ;
+    mapping (address => uint) _balances ; 
+
+    constructor (){
+        _totalsupply = 100 * 10 ** _decimals ;
+        _balances [msg.sender] = _totalsupply ; 
+    }
+    function name () public view returns ( string memory){
+        return _name ;
+    }
+
+    function symbol () public view returns (string memory){
+        return _symbol ;
+    }
+
+    function decimals () public view returns (uint8){
+        return _decimals;
+    }
+
+    function totalsupply () public view returns (uint){
+        return _totalsupply ;       
+    }
+
+    function balanceOf (address _owner) public view returns (uint){
+        return  _balances[_owner];
+    }
+ 
+    function transfer (address _to , uint _value ) public returns (bool){
+        require(_balances [msg.sender] >= _value, "saldo insuficiente");
+        _balances [msg.sender] = _balances [msg.sender] - _value ;
+        _balances [_to] = _balances [_to] + _value ;
+
+        return true ;
+    }
+
+}
