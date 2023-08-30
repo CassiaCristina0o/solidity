@@ -1,16 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-contract tokenCRteste {
+contract tokenCR {
 
     string _name = "token CR";
     string _symbol = "sith";
     uint8 _decimals = 8;
     uint _totalsupply ;
     mapping (address => uint) _balances ; 
+    mapping (address => mapping (address => uint )) _allowance;
 
     constructor (){
-        _totalsupply = 100 * 10 ** _decimals ;
+        _totalsupply = 100_000 * 10 ** _decimals ;
         _balances [msg.sender] = _totalsupply ; 
     }
     function name () public view returns ( string memory){
@@ -40,5 +41,26 @@ contract tokenCRteste {
 
         return true ;
     }
+
+    function tranferfrom (address _from , address _to , uint value ) public returns (bool){
+
+        require(_balances [_from] >= value , "saldo insuficiente");
+
+        require(allowance(_from , msg.sender) >= value , unicode"sem autorizaçao");
+
+        _balances [_from] = _balances [_from] - value ;
+        _balances [_to] = _balances [_to] + value ; 
+
+        _allowance [_from][msg.sender] = _allowance [_from][msg.sender] - value ;
+    }
+
+    function allowance (address _owner , address _spender) public view returns (uint){
+        return _allowance [_owner][_spender];
+    }
+
+   function approve (address _spender , uint _value) public returns (bool){
+       _allowance [ msg.sender][_spender] = _value ;
+       return true ;
+   }
 
 }
