@@ -10,6 +10,9 @@ contract tokenCR {
     mapping (address => uint) _balances ; 
     mapping (address => mapping (address => uint )) _allowance;
 
+    event Transfer (address indexed _from , address indexed _to , uint256 _value);
+    event approval (address indexed _owner , address indexed _spender , uint256 _value);
+
     constructor (){
         _totalsupply = 100_000 * 10 ** _decimals ;
         _balances [msg.sender] = _totalsupply ; 
@@ -38,6 +41,8 @@ contract tokenCR {
         require(_balances [msg.sender] >= _value, "saldo insuficiente");
         _balances [msg.sender] = _balances [msg.sender] - _value ;
         _balances [_to] = _balances [_to] + _value ;
+        
+        emit Transfer(msg.sender, _to, _value);
 
         return true ;
     }
@@ -52,6 +57,10 @@ contract tokenCR {
         _balances [_to] = _balances [_to] + value ; 
 
         _allowance [_from][msg.sender] = _allowance [_from][msg.sender] - value ;
+
+        emit Transfer(_from, _to, value);
+
+        return true;
     }
 
     function allowance (address _owner , address _spender) public view returns (uint){
@@ -60,6 +69,8 @@ contract tokenCR {
 
    function approve (address _spender , uint _value) public returns (bool){
        _allowance [ msg.sender][_spender] = _value ;
+
+       emit approval(msg.sender, _spender, _value);
        return true ;
    }
 
